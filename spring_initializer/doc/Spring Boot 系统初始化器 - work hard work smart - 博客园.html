@@ -1,0 +1,2149 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)https://www.cnblogs.com/linlf03/p/12267887.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <meta property="og:description" content="1、Spring Boot 系统初始化器 系统初始化器介绍 SpringFactoriesLoader介绍 系统初始化器原理 2、系统初始化器介绍 类名： ApplicationContextinit">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Spring Boot 系统初始化器 - work hard work smart - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.ico?v=20200522" type="image/x-icon">
+    
+    <link rel="stylesheet" href="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/bundle-kjc.min.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/bundle-kjc-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/linlf03/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/linlf03/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/linlf03/wlwmanifest.xml">
+    <script async="" src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/analytics.js.下载"></script><script src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/blog-common.min.js.下载"></script>
+    <script>
+        var currentBlogId = 86147;
+        var currentBlogApp = 'linlf03';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var skinName = 'KJC';
+    </script>
+    
+    
+    
+</head>
+<body>
+    <a name="top"></a>
+    
+    <table class="Framework" cellspacing="0" cellpadding="0" width="100%">
+	<tbody><tr>
+		<td colspan="3">
+			
+<div id="top">
+<table cellpadding="10" cellspacing="0">
+	<tbody><tr>
+		<td nowrap="">
+			<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/linlf03/">work hard work smart</a>
+</h1>
+			
+专注于Java后端开发。 不断总结，举一反三。
+
+		</td>
+	</tr>
+</tbody></table>
+</div>
+<div id="sub">
+	<div id="sub-right"><div class="BlogStats">posts - 
+984, comments - 
+136, trackbacks - 
+0, articles - 
+0</div>
+
+</div>
+	
+&nbsp;
+<a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+&nbsp;::
+
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/linlf03/">
+首页</a>
+&nbsp;::
+
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+&nbsp;::
+
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/work%20hard%20work%20smart">
+联系</a>&nbsp;::
+
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/linlf03/rss/">
+订阅</a>
+
+<a id="blog_nav_rss_image" href="https://www.cnblogs.com/linlf03/rss/">
+    <img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/xml.gif" alt="订阅">
+</a>&nbsp;::
+
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+
+
+
+</div>
+
+
+		</td>
+	</tr>
+	<tr>
+		<td class="LeftCell">
+			<div id="leftmenu">
+		            <div id="calendar"><div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2020/06/09&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2020年7月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2020/08/09&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+                    <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+                    <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+                    <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+                    <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+                    <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+                    <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+                    <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+        </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                        <td class="" align="center">
+                            <a href="https://www.cnblogs.com/linlf03/archive/2020/07/01.html"><u>1</u></a>
+                        </td>
+                        <td class="" align="center">
+                            <a href="https://www.cnblogs.com/linlf03/archive/2020/07/02.html"><u>2</u></a>
+                        </td>
+                        <td class="" align="center">
+                            3
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        <a href="https://www.cnblogs.com/linlf03/archive/2020/07/04.html"><u>4</u></a>
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            <a href="https://www.cnblogs.com/linlf03/archive/2020/07/05.html"><u>5</u></a>
+                        </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="CalTodayDay" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            11
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            18
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            25
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="" align="center">
+                                31
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            1
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            2
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            8
+                        </td>
+                </tr>
+    </tbody>
+</table></div></div>                
+                    <script>loadBlogDefaultCalendar();</script>
+		            
+<div id="sidebar_news" class="newsItem"><div id="cell">
+<img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/icon-group.jpg" hspace="5" align="left" vspace="2"><h3>公告</h3>
+<div id="news">
+	
+<div id="blog-news">
+    <!-- 博客园新闻频道引用代码 num-显示条数 -->
+<a href="http://www.cnblogs.com/linlf03/">Work Hard, Work Smart, Work Happy!</a>
+<br>
+<p>
+专注于Java相关技术<br>
+SSM，Spring全家桶，微服务，Linux，多线程，Android，集群，MySQL，分布式，中间件，致力于Java全栈开发！
+<br>
+染指.Net, JavaScript、Angular，Ionic，Vue等技术
+</p>
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/linlf03/">
+            work hard work smart
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/linlf03/" title="入园时间：2010-09-14">
+            9年9个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/linlf03/followers/">
+            194
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/linlf03/followees/">
+            22
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow(&#39;2a24311a-9ebf-df11-ac81-842b2b196315&#39;)">+加关注</a></div>
+        <script>getFollowStatus('2a24311a-9ebf-df11-ac81-842b2b196315');</script>
+    </div>
+</div>
+</div>
+</div>
+
+</div>
+
+<div id="sidebar_ad"></div>
+	            <div id="blog-sidecolumn">
+<!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block">
+    <div id="cell">
+<img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/icon-group.jpg" hspace="5" align="left" vspace="2">
+<h3>
+常用链接
+</h3>
+<ul>
+		<li>
+
+<a href="https://www.cnblogs.com/linlf03/p/" title="我的博客的随笔列表">我的随笔</a>
+</li>
+		<li>
+
+<a href="https://www.cnblogs.com/linlf03/MyComments.html" title="我的发表过的评论列表">我的评论</a>
+</li>
+		<li>
+
+<a href="https://www.cnblogs.com/linlf03/OtherPosts.html" title="我评论过的随笔列表">我的参与</a>
+</li>
+		<li>
+
+<a href="https://www.cnblogs.com/linlf03/RecentComments.html" title="我的博客的评论列表">最新评论</a>
+</li>
+		<li>
+
+<a href="https://www.cnblogs.com/linlf03/tag/" title="我的博客的标签列表">我的标签</a>
+</li>
+
+<li><a id="itemListLink" onclick="this.blur();WarpClass(&#39;itemListLink&#39;, &#39;itemListLin_con&#39;);return false;" href="https://www.cnblogs.com/linlf03/p/12267887.html#">更多链接</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+
+</div>
+</div>
+
+
+</div>
+
+<!-- 最新随笔 -->
+<div id="sidebar_recentposts" class="sidebar-block">
+    <div id="cell">
+<img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/icon-group.jpg" hspace="5" align="left" vspace="2"><h3>最新随笔</h3>
+<ul class="side_left_list">
+                <li>
+                    
+
+<a href="https://www.cnblogs.com/linlf03/p/13252054.html">1.SpringBoot集成Redis集群</a>
+
+                </li>
+                <li>
+                    
+
+<a href="https://www.cnblogs.com/linlf03/p/13244368.html">2.Redis 集群( 三主三从)实践</a>
+
+                </li>
+                <li>
+                    
+
+<a href="https://www.cnblogs.com/linlf03/p/13245665.html">3.SpringBoot集成哨兵模式</a>
+
+                </li>
+                <li>
+                    
+
+<a href="https://www.cnblogs.com/linlf03/p/13238064.html">4.Redis 哨兵工作原理和常用命令介绍</a>
+
+                </li>
+                <li>
+                    
+
+<a href="https://www.cnblogs.com/linlf03/p/13235858.html">5.Redis 哨兵机制和实现</a>
+
+                </li>
+                <li>
+                    
+
+<a href="https://www.cnblogs.com/linlf03/p/13235692.html">6.Redis 缓存过期机制和内存淘汰管理机制</a>
+
+                </li>
+                <li>
+                    
+
+<a href="https://www.cnblogs.com/linlf03/p/13235320.html">7.Redis无磁盘化复制</a>
+
+                </li>
+                <li>
+                    
+
+<a href="https://www.cnblogs.com/linlf03/p/9615102.html">8.Redis 主从架构实践</a>
+
+                </li>
+                <li>
+                    
+
+<a href="https://www.cnblogs.com/linlf03/p/13234000.html">9.Redis 持久化机制</a>
+
+                </li>
+                <li>
+                    
+
+<a href="https://www.cnblogs.com/linlf03/p/13226134.html">10.Redis发布(pub)和订阅(sub)</a>
+
+                </li>
+	
+
+</ul>
+</div>
+
+
+</div>
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block">
+    <div id="cell">
+<img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/icon-group.jpg" hspace="5" align="left" vspace="2">
+<h3>我的标签</h3>
+<div id="MyTag">
+<ul>
+
+        <li>
+            <a href="https://www.cnblogs.com/linlf03/tag/Android/">Android</a>(2)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/linlf03/tag/Android%20%E5%9F%BA%E7%A1%80/">Android 基础</a>(2)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/linlf03/tag/c%23/">c#</a>(1)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/linlf03/tag/c%23%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86----%E5%A7%94%E6%89%98%E5%92%8C%E4%BA%8B%E4%BB%B6/">c#基础知识----委托和事件</a>(1)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/linlf03/tag/STL/">STL</a>(1)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/linlf03/tag/Word%202007%20%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">Word 2007 基本操作</a>(1)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/linlf03/tag/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/">数据结构和算法</a>(1)
+        </li>
+    
+
+</ul>
+</div>
+</div>
+
+
+</div>
+
+<!-- 积分与排名 -->
+<div id="sidebar_scorerank" class="sidebar-block">
+    <div id="cell">
+<img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/icon-group.jpg" hspace="5" align="left" vspace="2"><h3>积分与排名</h3>
+<ul>
+	<li>
+		积分 -
+    
+542780
+    </li>
+	<li>
+		排名 -
+		
+474
+	</li>
+</ul>
+</div>
+
+
+</div>
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+    
+		<div id="cell">
+		<img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/icon-group.jpg" hspace="5" align="left" vspace="2"><h3>
+
+随笔分类
+<span style="font-size:11px;font-weight:normal">(1025)</span>
+
+</h3>
+		
+			
+				<ul>
+			
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/324575.html" rel="" target="">
+    .NET互操作性(8)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1409790.html" rel="" target="">
+    A.Http原理(9)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/321063.html" rel="" target="">
+    A.设计模式(26)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1409851.html" rel="" target="">
+    A.总结(35)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/307807.html" rel="" target="">
+    B.WPF(32)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/321279.html" rel="" target="">
+    B.WPF 控件开发(10)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/320270.html" rel="" target="">
+    C.Blend(WPF/Silverlight)(1)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/310922.html" rel="" target="">
+    D.C# (35)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/344111.html" rel="" target="">
+    D.Effective C#(1)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/745012.html" rel="" target="">
+    E.微信公众号开发（ASP.NET ）(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/342284.html" rel="" target="">
+    EPub(5)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/321062.html" rel="" target="">
+    F.VS 工具使用技巧(11)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/307806.html" rel="" target="">
+    I.软考架构师(1)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/307804.html" rel="" target="">
+    J.CPP(33)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/336831.html" rel="" target="">
+    J.CPP 高级(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/321064.html" rel="" target="">
+    M.数据结构(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/345300.html" rel="" target="">
+    O. H5、CSS、JS(11)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/346839.html" rel="" target="">
+    O.JQuery(8)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/348620.html" rel="" target="">
+    O.大数据(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/353539.html" rel="" target="">
+    P. Win 8(34)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/893614.html" rel="" target="">
+    Q.JavaScript(5)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/356076.html" rel="" target="">
+    Q.SQLite(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1163343.html" rel="" target="">
+    Q.Typescript(5)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/399720.html" rel="" target="">
+    R.Linq(1)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1451220.html" rel="" target="">
+    S. Dubbo(10)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1687293.html" rel="" target="">
+    S. Java JDK源码分析(11)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1095179.html" rel="" target="">
+    S. Mybatis(5)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1103587.html" rel="" target="">
+    S. Tomcat(9)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1507891.html" rel="" target="">
+    S. 并发与Netty(20)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/321065.html" rel="" target="">
+    S. 并发与高并发(1)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/436145.html" rel="" target="">
+    S.Android(88)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/547937.html" rel="" target="">
+    S.Android 服务端开发(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/464635.html" rel="" target="">
+    S.Android 工具使用(43)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/783547.html" rel="" target="">
+    S.Android 开源项目使用(8)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1680428.html" rel="" target="">
+    S.Docker(12)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1095178.html" rel="" target="">
+    S.Hibernate(1)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/436146.html" rel="" target="">
+    S.Java(79)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1452292.html" rel="" target="">
+    S.Java性能监控和调优(10)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1095136.html" rel="" target="">
+    S.Jsp(15)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1457629.html" rel="" target="">
+    S.JVM(32)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/480597.html" rel="" target="">
+    S.Linux 服务器(32)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1510913.html" rel="" target="">
+    S.Nginx(19)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1095176.html" rel="" target="">
+    S.Spring(23)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1302118.html" rel="" target="">
+    S.Spring Boot(50)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1341347.html" rel="" target="">
+    S.Spring Cloud(43)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1494264.html" rel="" target="">
+    S.Spring源码分析(14)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1095177.html" rel="" target="">
+    S.Struts(7)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/865844.html" rel="" target="">
+    T. PHP(11)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/891477.html" rel="" target="">
+    T.MySQL(10)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1260851.html" rel="" target="">
+    T.Oracle(9)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1470158.html" rel="" target="">
+    T.Redis(25)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1038446.html" rel="" target="">
+    U. Angular(32)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1058210.html" rel="" target="">
+    U. IONIC(14)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/963370.html" rel="" target="">
+    U. PhoneGap(17)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/963405.html" rel="" target="">
+    U. React Native(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1112452.html" rel="" target="">
+    U. Vue(6)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1449615.html" rel="" target="">
+    V. Kafka(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1307387.html" rel="" target="">
+    V. ZooKeeper(15)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1693225.html" rel="" target="">
+    V.ElsticSearch(5)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/1694349.html" rel="" target="">
+    V.Rabbit MQ(4)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/307879.html" rel="" target="">
+    其它(45)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/category/338669.html" rel="" target="">
+    生活(8)
+</a>
+
+				</li>
+			
+				</ul>
+			
+		</div>
+		<div id="cell">
+		<img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/icon-group.jpg" hspace="5" align="left" vspace="2"><h3>
+
+随笔档案
+<span style="font-size:11px;font-weight:normal">(984)</span>
+
+</h3>
+		
+			
+				<ul>
+			
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2020/07.html" rel="" target="">
+    2020年7月(11)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2020/06.html" rel="" target="">
+    2020年6月(21)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2020/05.html" rel="" target="">
+    2020年5月(15)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2020/04.html" rel="" target="">
+    2020年4月(27)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2020/03.html" rel="" target="">
+    2020年3月(47)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2020/02.html" rel="" target="">
+    2020年2月(20)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2020/01.html" rel="" target="">
+    2020年1月(14)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2019/12.html" rel="" target="">
+    2019年12月(11)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2019/10.html" rel="" target="">
+    2019年10月(1)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2019/09.html" rel="" target="">
+    2019年9月(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2019/08.html" rel="" target="">
+    2019年8月(23)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2019/07.html" rel="" target="">
+    2019年7月(19)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2019/06.html" rel="" target="">
+    2019年6月(41)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2019/05.html" rel="" target="">
+    2019年5月(33)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2019/04.html" rel="" target="">
+    2019年4月(12)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2019/03.html" rel="" target="">
+    2019年3月(17)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2019/02.html" rel="" target="">
+    2019年2月(17)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2019/01.html" rel="" target="">
+    2019年1月(9)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2018/12.html" rel="" target="">
+    2018年12月(11)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2018/11.html" rel="" target="">
+    2018年11月(17)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2018/10.html" rel="" target="">
+    2018年10月(28)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2018/09.html" rel="" target="">
+    2018年9月(6)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2018/08.html" rel="" target="">
+    2018年8月(18)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2018/07.html" rel="" target="">
+    2018年7月(11)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2018/06.html" rel="" target="">
+    2018年6月(4)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2018/05.html" rel="" target="">
+    2018年5月(8)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2018/04.html" rel="" target="">
+    2018年4月(5)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2018/03.html" rel="" target="">
+    2018年3月(5)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2018/02.html" rel="" target="">
+    2018年2月(9)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2018/01.html" rel="" target="">
+    2018年1月(8)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2017/12.html" rel="" target="">
+    2017年12月(4)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2017/11.html" rel="" target="">
+    2017年11月(12)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2017/10.html" rel="" target="">
+    2017年10月(29)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2017/09.html" rel="" target="">
+    2017年9月(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2017/08.html" rel="" target="">
+    2017年8月(18)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2017/07.html" rel="" target="">
+    2017年7月(11)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2017/06.html" rel="" target="">
+    2017年6月(14)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2017/05.html" rel="" target="">
+    2017年5月(8)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2017/04.html" rel="" target="">
+    2017年4月(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2017/03.html" rel="" target="">
+    2017年3月(8)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2017/02.html" rel="" target="">
+    2017年2月(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2016/12.html" rel="" target="">
+    2016年12月(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2016/10.html" rel="" target="">
+    2016年10月(4)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2016/09.html" rel="" target="">
+    2016年9月(7)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2016/08.html" rel="" target="">
+    2016年8月(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2016/07.html" rel="" target="">
+    2016年7月(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2016/06.html" rel="" target="">
+    2016年6月(4)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2016/04.html" rel="" target="">
+    2016年4月(1)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2016/03.html" rel="" target="">
+    2016年3月(7)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2016/02.html" rel="" target="">
+    2016年2月(6)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2016/01.html" rel="" target="">
+    2016年1月(7)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2015/11.html" rel="" target="">
+    2015年11月(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2015/10.html" rel="" target="">
+    2015年10月(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2015/09.html" rel="" target="">
+    2015年9月(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2015/08.html" rel="" target="">
+    2015年8月(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2015/07.html" rel="" target="">
+    2015年7月(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2015/06.html" rel="" target="">
+    2015年6月(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2014/11.html" rel="" target="">
+    2014年11月(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2014/10.html" rel="" target="">
+    2014年10月(1)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2014/07.html" rel="" target="">
+    2014年7月(4)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2014/06.html" rel="" target="">
+    2014年6月(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2014/04.html" rel="" target="">
+    2014年4月(6)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2014/03.html" rel="" target="">
+    2014年3月(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2014/02.html" rel="" target="">
+    2014年2月(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2014/01.html" rel="" target="">
+    2014年1月(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2013/12.html" rel="" target="">
+    2013年12月(6)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2013/11.html" rel="" target="">
+    2013年11月(8)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2013/10.html" rel="" target="">
+    2013年10月(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2013/09.html" rel="" target="">
+    2013年9月(5)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2013/08.html" rel="" target="">
+    2013年8月(8)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2013/07.html" rel="" target="">
+    2013年7月(1)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2013/06.html" rel="" target="">
+    2013年6月(8)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2013/05.html" rel="" target="">
+    2013年5月(10)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2013/04.html" rel="" target="">
+    2013年4月(8)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2013/03.html" rel="" target="">
+    2013年3月(33)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2013/01.html" rel="" target="">
+    2013年1月(7)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2012/12.html" rel="" target="">
+    2012年12月(10)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2012/11.html" rel="" target="">
+    2012年11月(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2012/10.html" rel="" target="">
+    2012年10月(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2012/09.html" rel="" target="">
+    2012年9月(2)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2012/08.html" rel="" target="">
+    2012年8月(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2012/07.html" rel="" target="">
+    2012年7月(6)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2012/06.html" rel="" target="">
+    2012年6月(7)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2012/03.html" rel="" target="">
+    2012年3月(18)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2012/02.html" rel="" target="">
+    2012年2月(17)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2012/01.html" rel="" target="">
+    2012年1月(13)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2011/12.html" rel="" target="">
+    2011年12月(26)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2011/11.html" rel="" target="">
+    2011年11月(48)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2011/10.html" rel="" target="">
+    2011年10月(13)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2011/09.html" rel="" target="">
+    2011年9月(28)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2011/08.html" rel="" target="">
+    2011年8月(17)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2011/07.html" rel="" target="">
+    2011年7月(7)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2011/05.html" rel="" target="">
+    2011年5月(3)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2011/04.html" rel="" target="">
+    2011年4月(1)
+</a>
+
+				</li>
+				<li>
+<a href="https://www.cnblogs.com/linlf03/archive/2011/03.html" rel="" target="">
+    2011年3月(1)
+</a>
+
+				</li>
+			
+				</ul>
+			
+		</div>
+
+
+</div>
+
+<!-- 最新评论 -->
+<div id="sidebar_recentcomments" class="sidebar-block">
+    <div id="recent_comments_wrap" class="RecentComment">
+    <h3 class="catListTitle">最新评论</h3>
+    <div class="RecentCommentBlock">
+        <ul>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/linlf03/archive/2011/09/11/2173833.html">1. Re:WPF 一个MVVM的简单例子</a></li>
+                    <li class="recent_comment_body"><p>整理了一个Demo，有需要的同学可以参考一下：<br>
+<a href="https://www.cnblogs.com/linlf03/p/12267887.html" target="blank"></a></p>
+</li>
+                    <li class="recent_comment_author">--guchuanhang</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/linlf03/p/10990145.html">2. Re:JVM 数组创建的本质</a></li>
+                    <li class="recent_comment_body"><p>请问楼主：<br>
+newarray指令分配内存的原理是什么呢？为什么就不能扩容呢？</p>
+</li>
+                    <li class="recent_comment_author">--啊k传</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/linlf03/p/11332765.html">3. Re:Netty集成Protobuf</a></li>
+                    <li class="recent_comment_body">有一个问题请问一下，在proto里面，只有一个person 所以，在netty里面加了下面这一行 pipeline.addLast(new ProtobufDecoder(MyDataInfo.Per...</li>
+                    <li class="recent_comment_author">--是我*太傻</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/linlf03/p/12267887.html">4. Re:Spring Boot 系统初始化器</a></li>
+                    <li class="recent_comment_body"><p>谢谢</p>
+</li>
+                    <li class="recent_comment_author">--田培融</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/linlf03/p/12213720.html">5. Re:WebSocket实践</a></li>
+                    <li class="recent_comment_body">博主逻辑清晰，写得很好，不过要是想简单点的话可以试试第三方websocket推送框架，像GoEasy，有免费版的，提供完整的websocket前后端解决方案，支持多种前后端语言的使用，我一般都用这个，...</li>
+                    <li class="recent_comment_author">--EmmaLan</li>
+        </ul>
+    </div>
+</div>
+</div>
+
+
+
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block">
+    
+<div id="topview_posts_wrap">
+    <h3 class="catListTitle">阅读排行榜</h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/12/09/2282574.html">
+                            1. C# Dictionary用法总结(160924)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/p/8215677.html">
+                            2. Java JDBC连接Oracle(54088)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/p/3296323.html">
+                            3. Android中Service的使用详解和注意点（LocalService）(52336)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2012/01/01/2309645.html">
+                            4. JQuery 淡出、 动画、显示/隐藏切换等效果(44402)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/p/3680454.html">
+                            5. android 各国语言对应的缩写(40555)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2012/12/07/2807699.html">
+                            6. Eclipse工具使用技巧总结(30847)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2012/12/16/2820574.html">
+                            7. Eclipse 连接MySql数据库总结(27792)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2012/12/16/2820677.html">
+                            8. Java 使用execute方法执行Sql语句(25802)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/p/3267732.html">
+                            9. Android 文件的选择(22894)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/11/30/2268705.html">
+                            10. C#操作xml SelectNodes,SelectSingleNode总是返回NULL 与 xPath 介绍(22146)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/09/11/2173833.html">
+                            11. WPF 一个MVVM的简单例子(22111)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2012/02/29/2373202.html">
+                            12. .NET Framework 4.5新特性(21769)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2013/03/15/2961430.html">
+                            13. Android 中PopupWindow使用(21224)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/09/06/2168440.html">
+                            14. WPF 绑定各种数据源之Datatable(18900)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/p/6627580.html">
+                            15. Spring 部署Tomcat 404 错误解决方案(18388)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2012/01/01/2309666.html">
+                            16. jQuery HTML 操作 改变/添加文本值(17958)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/08/16/2140127.html">
+                            17. WPF ListBox(17198)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/09/01/2043139.html">
+                            18. wpf 多线程(16129)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/10/08/2201713.html">
+                            19. C#  方法使用汇总（GetEnumerator用法，？？用法等）(15692)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/10/26/2224732.html">
+                            20. Perforce使用指南_forP4V(14569)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/12/26/2227674.html">
+                            21. WPF popup控件的使用(14231)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/p/3577828.html">
+                            22. Android 高手进阶之自定义View，自定义属性（带进度的圆形进度条）(13040)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/10/10/2205896.html">
+                            23. C# 对XML基本操作总结(12216)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/p/8320958.html">
+                            24. Mybatis连接Oracle实现增删改查实践(11541)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2012/12/01/2797307.html">
+                            25. 如何使用Android中的Sample(11324)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/09/06/2168600.html">
+                            26. WPF绑定各种数据源之元素控件属性(11240)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2012/03/27/2403972.html">
+                            27. ContextMenu的使用(11139)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/11/16/2251318.html">
+                            28. C++ AFX_MANAGE_STATE(AfxGetStaticModuleState())的作用(11011)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2012/12/16/2820636.html">
+                            29. Java 使用executeUpdate向数据库中创建表格(10894)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/p/3192025.html">
+                            30. Android 使用AIDL调用外部服务(10656)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/11/20/2256539.html">
+                            31. C++ 使用API写Windows程序(10601)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/p/3484181.html">
+                            32. 安装Android sdk 4.4(19)出现问题的解决方案(10544)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/12/16/2290397.html">
+                            33. html5 图片旋转(10536)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/09/09/2172370.html">
+                            34. WPF 获得DataTemplate中的控件(10388)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/11/03/2234424.html">
+                            35. C# Serializable对象序列化的作用(10056)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/p/5806896.html">
+                            36. Git 常见问题： unable to negotiate with *.*.*.*: no matching key exchange methodfound...(8898)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/11/08/2241135.html">
+                            37. WPF Button 透明效果(8890)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2013/01/17/2865251.html">
+                            38. java实现文件单词频率统计(8850)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/p/3241161.html">
+                            39. 删除Android自带软件方法及adb remount 失败解决方案(8447)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/12/23/2299009.html">
+                            40. css  &lt;meta name="viewport" content="xx"&gt;(8006)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+</div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block">
+    
+<div id="topfeedback_posts_wrap">
+    <h3 class="catListTitle">评论排行榜</h3>
+    <div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/09/11/2173833.html">
+                            1. WPF 一个MVVM的简单例子(13)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/12/09/2282574.html">
+                            2. C# Dictionary用法总结(9)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/p/3296323.html">
+                            3. Android中Service的使用详解和注意点（LocalService）(8)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/12/16/2290397.html">
+                            4. html5 图片旋转(6)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/linlf03/archive/2011/11/30/2268705.html">
+                            5. C#操作xml SelectNodes,SelectSingleNode总是返回NULL 与 xPath 介绍(5)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+</div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+    
+<div id="topdigg_posts_wrap">
+    <div id="cell">
+        <img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/icon-group.jpg" hspace="5" align="left" vspace="2"><h3>推荐排行榜</h3>
+        <div class="RecentComment">
+            <div id="TopDiggPostsBlock">
+                <ul style="word-break:break-all">
+                            <li>
+                                <a href="https://www.cnblogs.com/linlf03/archive/2011/12/09/2282574.html">
+                                    1. C# Dictionary用法总结(15)
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.cnblogs.com/linlf03/archive/2011/09/01/2043139.html">
+                                    2. wpf 多线程(5)
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.cnblogs.com/linlf03/p/3296323.html">
+                                    3. Android中Service的使用详解和注意点（LocalService）(5)
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.cnblogs.com/linlf03/archive/2012/12/07/2807699.html">
+                                    4. Eclipse工具使用技巧总结(4)
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.cnblogs.com/linlf03/archive/2011/10/29/2228430.html">
+                                    5. WPF 附加属性(4)
+                                </a>
+                            </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</div></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+		</td>
+		<td class="MainCell">
+			<div id="main">
+				<div id="post_detail">
+	<div class="post">
+		<div class="posthead">
+			<h2>
+				
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/linlf03/p/12267887.html">
+    <span>Spring Boot 系统初始化器</span>
+    
+
+
+</a>
+
+			</h2>
+ 			Posted on 
+<span id="post-date">2020-02-06 14:08</span>&nbsp;
+<a href="https://www.cnblogs.com/linlf03/">work hard work smart</a>&nbsp;
+阅读(<span id="post_view_count">305</span>)&nbsp;
+评论(<span id="post_comment_count">1</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=12267887" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(12267887);return false;">收藏</a>
+			
+			
+		</div>
+		<div class="postbody">
+<div id="cnblogs_post_body" class="blogpost-body ">
+    <p><strong>1、Spring Boot 系统初始化器</strong></p>
+<p>系统初始化器介绍</p>
+<p>SpringFactoriesLoader介绍</p>
+<p>系统初始化器原理</p>
+<p>&nbsp;</p>
+<p><strong>2、系统初始化器介绍</strong></p>
+<p>类名： ApplicationContextinitializer</p>
+<p>介绍： Spring容量刷新之前执行的一个回调函数</p>
+<p>作用： 向SpringBoot容器中注册属性</p>
+<p>使用：继承接口自定义实现</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><strong>3、系统初始化器实践</strong></p>
+<p><strong>创建系统初始化器方式一（实现原理：定义在spring.factories 文件中被SpringFactoriesLoader发现注册）</strong></p>
+<p>1)创建初始化器</p>
+<p>在包initializer下创建FirstInitializer</p>
+<div class="cnblogs_Highlighter sh-gutter">
+<div><div id="highlighter_319856" class="syntaxhighlighter  java"><div class="toolbar"><span><a href="https://www.cnblogs.com/linlf03/p/12267887.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div><div class="line number16 index15 alt1">16</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java preprocessor">/**</code></div><div class="line number2 index1 alt1"><code class="java spaces">&nbsp;</code><code class="java preprocessor">*</code></div><div class="line number3 index2 alt2"><code class="java spaces">&nbsp;</code><code class="java preprocessor">* 第一个系统初始化器</code></div><div class="line number4 index3 alt1"><code class="java spaces">&nbsp;</code><code class="java preprocessor">*/</code></div><div class="line number5 index4 alt2"><code class="java color1">@Order</code><code class="java plain">(</code><code class="java value">1</code><code class="java plain">)</code></div><div class="line number6 index5 alt1"><code class="java keyword">public</code> <code class="java keyword">class</code> <code class="java plain">FirstInitializer&nbsp; </code><code class="java keyword">implements</code> <code class="java plain">ApplicationContextInitializer&lt;ConfigurableApplicationContext&gt; {</code></div><div class="line number7 index6 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java color1">@Override</code></div><div class="line number8 index7 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java keyword">void</code> <code class="java plain">initialize(ConfigurableApplicationContext applicationContext) {</code></div><div class="line number9 index8 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">ConfigurableEnvironment environment = applicationContext.getEnvironment();</code></div><div class="line number10 index9 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">Map&lt;String, Object&gt; map = </code><code class="java keyword">new</code> <code class="java plain">HashMap&lt;&gt;();</code></div><div class="line number11 index10 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">map.put(</code><code class="java string">"key1"</code><code class="java plain">,</code><code class="java string">"value1"</code><code class="java plain">);</code></div><div class="line number12 index11 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">MapPropertySource mapPropertySource = </code><code class="java keyword">new</code> <code class="java plain">MapPropertySource(</code><code class="java string">"firstInitializer"</code><code class="java plain">, map);</code></div><div class="line number13 index12 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">environment.getPropertySources().addLast(mapPropertySource);</code></div><div class="line number14 index13 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">System.out.println(</code><code class="java string">"run FirstInitializer"</code><code class="java plain">);</code></div><div class="line number15 index14 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number16 index15 alt1"><code class="java plain">}</code></div></div></td></tr></tbody></table></div></div>
+</div>
+<p>　　</p>
+<p>2) 创建spring.factories&nbsp;</p>
+<p><img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/158914-20200206140128097-18031778.png" alt=""></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>内容为：</p>
+<pre>org.springframework.context.ApplicationContextInitializer=com.example.demo.initialize.FirstInitializer<br><br><br>3） 创建服务类 TestService&nbsp;</pre>
+<div class="cnblogs_Highlighter sh-gutter">
+<div><div id="highlighter_371024" class="syntaxhighlighter  java"><div class="toolbar"><span><a href="https://www.cnblogs.com/linlf03/p/12267887.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div><div class="line number16 index15 alt1">16</div><div class="line number17 index16 alt2">17</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java color1">@Component</code></div><div class="line number2 index1 alt1"><code class="java keyword">public</code> <code class="java keyword">class</code> <code class="java plain">TestService </code><code class="java keyword">implements</code> <code class="java plain">ApplicationContextAware</code></div><div class="line number3 index2 alt2"><code class="java plain">{</code></div><div class="line number4 index3 alt1">&nbsp;</div><div class="line number5 index4 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">private</code> <code class="java plain">ApplicationContext applicationContext;</code></div><div class="line number6 index5 alt1">&nbsp;</div><div class="line number7 index6 alt2">&nbsp;</div><div class="line number8 index7 alt1">&nbsp;</div><div class="line number9 index8 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java color1">@Override</code></div><div class="line number10 index9 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java keyword">void</code> <code class="java plain">setApplicationContext(ApplicationContext applicationContext) </code><code class="java keyword">throws</code> <code class="java plain">BeansException {</code></div><div class="line number11 index10 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">this</code><code class="java plain">.applicationContext = applicationContext;</code></div><div class="line number12 index11 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number13 index12 alt2">&nbsp;</div><div class="line number14 index13 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java plain">String test(){</code></div><div class="line number15 index14 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">return</code>&nbsp; <code class="java plain">applicationContext.getEnvironment().getProperty(</code><code class="java string">"key1"</code><code class="java plain">);</code></div><div class="line number16 index15 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number17 index16 alt2"><code class="java plain">}</code></div></div></td></tr></tbody></table></div></div>
+</div>
+<p>　　</p>
+<p>4) 在Controller层增加方法</p>
+<div class="cnblogs_Highlighter sh-gutter">
+<div><div id="highlighter_267570" class="syntaxhighlighter  java"><div class="toolbar"><span><a href="https://www.cnblogs.com/linlf03/p/12267887.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java color1">@RequestMapping</code><code class="java plain">(</code><code class="java string">"/test"</code><code class="java plain">)</code></div><div class="line number2 index1 alt1"><code class="java color1">@ResponseBody</code></div><div class="line number3 index2 alt2"><code class="java keyword">public</code> <code class="java plain">String test(){</code></div><div class="line number4 index3 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">return</code>&nbsp; <code class="java plain">testService.test();</code></div><div class="line number5 index4 alt2"><code class="java plain">}</code></div></div></td></tr></tbody></table></div></div>
+</div>
+<p>　　</p>
+<p>5) 启动工程查看效果</p>
+<p>可以发现打印了run&nbsp;FirstInitializer</p>
+<p><img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/158914-20200206140644849-1648554338.png" alt="" width="806" height="219"></p>
+<p>&nbsp;</p>
+<p>&nbsp;然后调用接口。返回值为之前设置的value1</p>
+<p><img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/158914-20200206140729841-2117362103.png" alt="" width="292" height="69"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><strong>创建系统初始化器方式二<strong>（实现原理：初始化完毕手动添加）</strong></strong></p>
+<p>1)订单创建初始化器</p>
+<div class="cnblogs_Highlighter sh-gutter">
+<div><div id="highlighter_433302" class="syntaxhighlighter  java"><div class="toolbar"><span><a href="https://www.cnblogs.com/linlf03/p/12267887.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java color1">@Order</code><code class="java plain">(</code><code class="java value">2</code><code class="java plain">)</code></div><div class="line number2 index1 alt1"><code class="java keyword">public</code> <code class="java keyword">class</code> <code class="java plain">SecondInitializer </code><code class="java keyword">implements</code> <code class="java plain">ApplicationContextInitializer&lt;ConfigurableApplicationContext&gt; {</code></div><div class="line number3 index2 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java color1">@Override</code></div><div class="line number4 index3 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java keyword">void</code> <code class="java plain">initialize(ConfigurableApplicationContext applicationContext) {</code></div><div class="line number5 index4 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">ConfigurableEnvironment environment = applicationContext.getEnvironment();</code></div><div class="line number6 index5 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">Map&lt;String, Object&gt; map = </code><code class="java keyword">new</code> <code class="java plain">HashMap&lt;&gt;();</code></div><div class="line number7 index6 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">map.put(</code><code class="java string">"key2"</code><code class="java plain">,</code><code class="java string">"value2"</code><code class="java plain">);</code></div><div class="line number8 index7 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">MapPropertySource mapPropertySource = </code><code class="java keyword">new</code> <code class="java plain">MapPropertySource(</code><code class="java string">"secondInitializer"</code><code class="java plain">, map);</code></div><div class="line number9 index8 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">environment.getPropertySources().addLast(mapPropertySource);</code></div><div class="line number10 index9 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">System.out.println(</code><code class="java string">"run SecondInitializer"</code><code class="java plain">);</code></div><div class="line number11 index10 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number12 index11 alt1"><code class="java plain">}</code></div></div></td></tr></tbody></table></div></div>
+</div>
+<p>　　</p>
+<p>2） SB2Application改成如下</p>
+<div class="cnblogs_Highlighter sh-gutter">
+<div><div id="highlighter_850410" class="syntaxhighlighter  java"><div class="toolbar"><span><a href="https://www.cnblogs.com/linlf03/p/12267887.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java color1">@SpringBootApplication</code></div><div class="line number2 index1 alt1"><code class="java color1">@MapperScan</code><code class="java plain">(</code><code class="java string">"com.example.demo.mapper"</code><code class="java plain">)</code></div><div class="line number3 index2 alt2"><code class="java keyword">public</code> <code class="java keyword">class</code> <code class="java plain">Sb2Application {</code></div><div class="line number4 index3 alt1">&nbsp;</div><div class="line number5 index4 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java keyword">static</code> <code class="java keyword">void</code> <code class="java plain">main(String[] args) {</code></div><div class="line number6 index5 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">//SpringApplication.run(Sb2Application.class, args);</code></div><div class="line number7 index6 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">SpringApplication springApplication = </code><code class="java keyword">new</code> <code class="java plain">SpringApplication(Sb2Application.</code><code class="java keyword">class</code><code class="java plain">);</code></div><div class="line number8 index7 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">springApplication.addInitializers(</code><code class="java keyword">new</code> <code class="java plain">SecondInitializer());</code></div><div class="line number9 index8 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">springApplication.run(args);</code></div><div class="line number10 index9 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number11 index10 alt2">&nbsp;</div><div class="line number12 index11 alt1"><code class="java plain">}</code></div></div></td></tr></tbody></table></div></div>
+</div>
+<p>　　</p>
+<p>3） 修改Service的test方法</p>
+<div class="cnblogs_Highlighter sh-gutter">
+<div><div id="highlighter_220478" class="syntaxhighlighter  java"><div class="toolbar"><span><a href="https://www.cnblogs.com/linlf03/p/12267887.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java keyword">public</code> <code class="java plain">String test(){</code></div><div class="line number2 index1 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">return</code>&nbsp; <code class="java plain">applicationContext.getEnvironment().getProperty(</code><code class="java string">"key2"</code><code class="java plain">);</code></div><div class="line number3 index2 alt2"><code class="java spaces">&nbsp;</code><code class="java plain">}</code></div></div></td></tr></tbody></table></div></div>
+</div>
+<p>　</p>
+<p>4）启动（说明两个初始化器都已经创建）</p>
+<p> . ____ _ __ _ _<br> /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \<br>( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \<br> \\/  ___)| |_)| | | | | || (_| |  ) ) ) )<br>  '  |____| .__|_| |_|_| |_\__, | / / / /<br> =========|_|==============|___/=/_/_/_/<br> :: Spring Boot ::        (v2.1.6.RELEASE)</p>
+<p>run FirstInitializer<br>run SecondInitializer</p>
+<p>　</p>
+<p>5）、测试返回结果。返回value2</p>
+<p>&nbsp;<img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/158914-20200206164747239-1210900951.png" alt=""></p>
+<p>&nbsp;</p>
+<p><strong>创建系统初始化器方式三<strong>（实现原理：定义成环境变量被DelegatingApplicationContextInitializer发现注册）</strong></strong></p>
+<p>1）创建初始化器</p>
+<div class="cnblogs_Highlighter sh-gutter">
+<div><div id="highlighter_31986" class="syntaxhighlighter  java"><div class="toolbar"><span><a href="https://www.cnblogs.com/linlf03/p/12267887.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java color1">@Order</code><code class="java plain">(</code><code class="java value">3</code><code class="java plain">)</code></div><div class="line number2 index1 alt1"><code class="java keyword">public</code> <code class="java keyword">class</code> <code class="java plain">ThirdInitializer </code><code class="java keyword">implements</code> <code class="java plain">ApplicationContextInitializer&lt;ConfigurableApplicationContext&gt; {</code></div><div class="line number3 index2 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java color1">@Override</code></div><div class="line number4 index3 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java keyword">void</code> <code class="java plain">initialize(ConfigurableApplicationContext applicationContext) {</code></div><div class="line number5 index4 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">ConfigurableEnvironment environment = applicationContext.getEnvironment();</code></div><div class="line number6 index5 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">Map&lt;String, Object&gt; map = </code><code class="java keyword">new</code> <code class="java plain">HashMap&lt;&gt;();</code></div><div class="line number7 index6 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">map.put(</code><code class="java string">"key3"</code><code class="java plain">,</code><code class="java string">"value3"</code><code class="java plain">);</code></div><div class="line number8 index7 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">MapPropertySource mapPropertySource = </code><code class="java keyword">new</code> <code class="java plain">MapPropertySource(</code><code class="java string">"thirdInitializer"</code><code class="java plain">, map);</code></div><div class="line number9 index8 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">environment.getPropertySources().addLast(mapPropertySource);</code></div><div class="line number10 index9 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">System.out.println(</code><code class="java string">"run ThirdInitializer"</code><code class="java plain">);</code></div><div class="line number11 index10 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number12 index11 alt1"><code class="java plain">}</code></div></div></td></tr></tbody></table></div></div>
+</div>
+<p>　　</p>
+<p>2) 在application.properties 增加</p>
+<div class="cnblogs_Highlighter sh-gutter">
+<div><div id="highlighter_737955" class="syntaxhighlighter  java"><div class="toolbar"><span><a href="https://www.cnblogs.com/linlf03/p/12267887.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java plain">context.initializer.classes=com.example.demo.initializer.ThirdInitializer</code></div></div></td></tr></tbody></table></div></div>
+</div>
+<p><img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/158914-20200206181143683-215562427.png" alt=""></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>3）、修改TestServer的test方法</p>
+<div class="cnblogs_Highlighter sh-gutter">
+<div><div id="highlighter_255416" class="syntaxhighlighter  java"><div class="toolbar"><span><a href="https://www.cnblogs.com/linlf03/p/12267887.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java keyword">public</code> <code class="java plain">String test(){</code></div><div class="line number2 index1 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">return</code>&nbsp; <code class="java plain">applicationContext.getEnvironment().getProperty(</code><code class="java string">"key3"</code><code class="java plain">);</code></div><div class="line number3 index2 alt2"><code class="java plain">}</code></div></div></td></tr></tbody></table></div></div>
+</div>
+<p>　　</p>
+<p>4） 启动测试</p>
+<p><img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/158914-20200206181358200-1327193780.png" alt="" width="293" height="199"></p>
+<p>&nbsp;</p>
+<p>&nbsp;可以发现打印的顺序和定义的不一致。第三个ThirdInitializer初始化器优先于第一个和第二个打印出来。</p>
+<p>&nbsp;</p>
+<p>使用接口测试，返回value2</p>
+<p><img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/158914-20200206181538392-1734401317.png" alt=""></p>
+<p>&nbsp;</p>
+<p>那springboot初始化器是如何被识别呢，靠的就是SpringFactoriesLoader</p>
+<p>springboot初始化器原理：&nbsp;</p>
+<p>初始化SpringApplication&nbsp;&nbsp;<a class="link-post-title" href="https://www.cnblogs.com/linlf03/p/12269834.html">工厂加载机制 SpringFactoriesLoader</a></p>
+<p>&nbsp;调用run方法：&nbsp;<a class="entry" href="https://www.cnblogs.com/linlf03/p/12271258.html" target="_blank">Spring Boot 系统初始化器是如何被调用的，以及实现原理</a>&nbsp;</p>
+</div>
+<div id="MySignature" style="display: block;">    <p style="background:rgb(230,250,230); padding:10px 10px 10px 10px; border:1px dashed rgb(224,224,224); font-family:微软雅黑; font-size:13px;">
+        作者：<a href="http://www.cnblogs.com/linlf03/" target="_blank">Work Hard Work Smart</a><br>
+        出处：<a href="http://www.cnblogs.com/linlf03/" target="_blank">http://www.cnblogs.com/linlf03/</a><br>
+        欢迎任何形式的转载，未经作者同意，请保留此段声明！
+        </p></div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/linlf03/category/1302118.html" target="_blank">S.Spring Boot</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(12267887,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;2a24311a-9ebf-df11-ac81-842b2b196315&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/linlf03/" target="_blank"><img src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/u158914.jpg" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/linlf03/">work hard work smart</a><br>
+            <a href="https://home.cnblogs.com/u/linlf03/followees/">关注 - 22</a><br>
+            <a href="https://home.cnblogs.com/u/linlf03/followers/">粉丝 - 194</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;2a24311a-9ebf-df11-ac81-842b2b196315&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(12267887,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(12267887,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/linlf03/p/12266225.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/linlf03/p/12266225.html" title="发布于 2020-02-05 21:32">Spring Boot启动流程</a>
+    <br>
+    <a href="https://www.cnblogs.com/linlf03/p/12269834.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/linlf03/p/12269834.html" title="发布于 2020-02-06 20:12">Spring Boot 工厂加载机制 SpringFactoriesLoader </a>
+
+</div>
+</div></div>
+	</div>
+<script src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/highlight.min.js.下载"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 86147, cb_blogApp = 'linlf03', cb_blogUserGuid = '2a24311a-9ebf-df11-ac81-842b2b196315';
+    var cb_entryId = 12267887, cb_entryCreatedDate = '2020-02-06 14:08', cb_postType = 1; 
+    loadViewCount(cb_entryId);
+    loadSideColumnAd();
+</script><a name="!comments"></a>
+<div id="blog-comments-placeholder">
+
+<div id="comment_pager_top">
+    
+</div>
+
+
+<h3>Feedback</h3>
+			<div class="post">
+				<div class="posthead">
+					<h2>
+						
+<a href="https://www.cnblogs.com/linlf03/p/12267887.html#4534081" class="layer">#1楼</a>
+<a name="4534081" id="comment_anchor_4534081"></a>
+
+        <span id="comment-maxId" style="display:none">4534081</span>
+        <span id="comment-maxDate" style="display:none">2020/3/27 下午1:18:37</span>
+
+						&nbsp;&nbsp;
+
+<span class="comment_actions">
+    
+    
+    
+    
+</span>
+
+
+					</h2>
+					
+<span class="comment_date">2020-03-27 13:18</span>
+
+ by 
+
+            <a id="a_comment_author_4534081" href="https://www.cnblogs.com/tianpeirong/" target="_blank">田培融</a>
+
+				</div>
+				<div class="postbody">
+<div id="comment_body_4534081" data-format-type="Markdown" class="blog_comment_body cnblogs-markdown">
+    <p>谢谢</p>
+
+</div>
+        <div class="comment_vote">
+            <span class="comment_error" style="color: red"></span>
+            <a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4534081, &#39;Digg&#39;, this.parentElement, false);">
+                支持(0)
+            </a>
+            <a href="javascript:void(0);" class="comment_burry" onclick="return voteComment(4534081, &#39;Bury&#39;, this.parentElement, false);">
+                反对(0)
+            </a>
+        </div>
+        
+</div>
+			</div>
+
+<div id="comment_pager_bottom">
+    
+</div>
+
+
+</div>
+<script>
+    var commentManager = new blogCommentManager();
+    commentManager.renderComments(0);
+</script>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/linlf03/p/12267887.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/linlf03/p/12267887.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    注册用户登录后才能发表评论，请 
+    <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a>
+     或 
+    <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，
+    <a href="https://www.cnblogs.com/">访问</a> 网站首页。
+</div></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"><a href="https://www.wenjuan.com/s/3uIjeq0/" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-博客园问卷调查&#39;)">【推荐】了解你才能更懂你，博客园首发问卷调查，助力社区新升级</a><br><a href="http://www.ucancode.com/index.htm" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-ucancode&#39;)">【推荐】超50万行VC++源码: 大型组态工控、电力仿真CAD与GIS源码库</a><br><a href="https://developer.aliyun.com/article/743591?utm_content=g_1000104138" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-阿里云开发者社区&#39;)">【推荐】Java经典面试题整理及答案详解（一）</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block"><a href="https://ai.youdao.com/third-anniversary.s?keyfrom=cnblogs" target="_blank"><img width="300" height="250" src="./Spring Boot 系统初始化器 - work hard work smart - 博客园_files/2016690-20200705083742466-1511628293.png" alt="有道智云周年庆" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;C1-网易有道&#39;);"></a></div>
+    <div id="under_post_news" style="display: none;"></div>
+    <div id="cnblogs_c2" class="c_ad_block" style="display: none;">
+        <div id="div-gpt-ad-1592366332455-0" style="width: 468px; height: 60px;"></div>
+    </div>
+    <div id="under_post_kb">
+<div class="itnews c_ad_block">
+    <b>最新 IT 新闻</b>:
+    <br>
+ ·              <a href="https://news.cnblogs.com/n/666786/" target="_blank">谷歌说漏嘴：Android 11正式版定于9月8日发布</a>
+            <br>
+ ·              <a href="https://news.cnblogs.com/n/666785/" target="_blank">便宜千元！苹果开启2020年教育优惠 买iPad、Mac送AirPods</a>
+            <br>
+ ·              <a href="https://news.cnblogs.com/n/666784/" target="_blank">竞争永不眠：抖快拼的三国杀</a>
+            <br>
+ ·              <a href="https://news.cnblogs.com/n/666782/" target="_blank">南京中院前法官：李国庆“夺权”未必合法</a>
+            <br>
+ ·              <a href="https://news.cnblogs.com/n/666783/" target="_blank">世界首个开源PDK，谷歌做到了！</a>
+            <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="c_ad_block">
+<b>历史上的今天：</b>
+<br>
+
+2012-02-06    <a href="https://www.cnblogs.com/linlf03/archive/2012/02/06/2340287.html">给JavaScript新手的24条实用建议</a>
+    <br>
+2012-02-06    <a href="https://www.cnblogs.com/linlf03/archive/2012/02/06/2340170.html">Virtual Machine虚拟机原理</a>
+    <br>
+</div>
+    <script type="text/javascript">
+        fixPostBody();
+        deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+        loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div></div>
+
+
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="FooterCell">
+			<p id="footer">
+	Powered by: 
+	<br>
+	
+	<a href="https://www.cnblogs.com/" id="footer_site_link">博客园</a>
+	<br>
+	Copyright © 2020 work hard work smart
+<br><span id="poweredby">Powered by .NET Core on Kubernetes</span>
+
+</p>
+
+
+		</td>
+	</tr>
+</tbody></table>
+
+
+    
+
+
+<div class="xl-chrome-ext-bar" id="xl_chrome_ext_{4DB361DE-01F7-4376-B494-639E489D19ED}" style="display: none;">
+      <div class="xl-chrome-ext-bar__logo"></div>
+
+      <a id="xl_chrome_ext_download" href="javascript:;" class="xl-chrome-ext-bar__option">下载视频</a>
+      <a id="xl_chrome_ext_close" href="javascript:;" class="xl-chrome-ext-bar__close"></a>
+    </div></body></html>
