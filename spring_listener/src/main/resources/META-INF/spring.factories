@@ -1,0 +1,1 @@
+org.springframework.context.ApplicationListener=cn.k.spring_listene.event.listener.FirstListener
